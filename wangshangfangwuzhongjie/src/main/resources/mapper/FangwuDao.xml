@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.FangwuDao">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.id as id
+        ,a.fangwu_name as fangwuName
+        ,a.fangwu_uuid_number as fangwuUuidNumber
+        ,a.fangwu_photo as fangwuPhoto
+        ,a.fangwu_address as fangwuAddress
+        ,a.fangwu_types as fangwuTypes
+        ,a.quyu_types as quyuTypes
+        ,a.huxing_types as huxingTypes
+        ,a.fangwu_pingfang as fangwuPingfang
+        ,a.fangwu_danjia as fangwuDanjia
+        ,a.fangwu_old_money as fangwuOldMoney
+        ,a.fangwu_new_money as fangwuNewMoney
+        ,a.fangwu_clicknum as fangwuClicknum
+        ,a.fangwu_content as fangwuContent
+        ,a.fangwuzhuangtai_types as fangwuzhuangtaiTypes
+        ,a.shangxia_types as shangxiaTypes
+        ,a.fangwu_delete as fangwuDelete
+        ,a.create_time as createTime
+    </sql>
+    <select id="selectListView" parameterType="map" resultType="com.entity.view.FangwuView" >
+        SELECT
+        <include refid="Base_Column_List" />
+
+--         级联表的字段
+
+        FROM fangwu  a
+
+        <where>
+            <if test="params.ids != null">
+                and a.id in
+                <foreach item="item" index="index" collection="params.ids" open="(" separator="," close=")">
+                #{item}
+                </foreach>
+            </if>
+            <if test=" params.fangwuName != '' and params.fangwuName != null and params.fangwuName != 'null' ">
+                and a.fangwu_name like CONCAT('%',#{params.fangwuName},'%')
+            </if>
+            <if test=" params.fangwuUuidNumber != '' and params.fangwuUuidNumber != null and params.fangwuUuidNumber != 'null' ">
+                and a.fangwu_uuid_number like CONCAT('%',#{params.fangwuUuidNumber},'%')
+            </if>
+            <if test=" params.fangwuAddress != '' and params.fangwuAddress != null and params.fangwuAddress != 'null' ">
+                and a.fangwu_address like CONCAT('%',#{params.fangwuAddress},'%')
+            </if>
+            <if test="params.fangwuTypes != null and params.fangwuTypes != ''">
+                and a.fangwu_types = #{params.fangwuTypes}
+            </if>
+            <if test="params.quyuTypes != null and params.quyuTypes != ''">
+                and a.quyu_types = #{params.quyuTypes}
+            </if>
+            <if test="params.huxingTypes != null and params.huxingTypes != ''">
+                and a.huxing_types = #{params.huxingTypes}
+            </if>
+            <if test="params.fangwuPingfangStart != null ">
+                <![CDATA[  and a.fangwu_pingfang >= #{params.fangwuPingfangStart}   ]]>
+            </if>
+            <if test="params.fangwuPingfangEnd != null ">
+                <![CDATA[  and a.fangwu_pingfang <= #{params.fangwuPingfangEnd}   ]]>
+            </if>
+            <if test="params.fangwuDanjiaStart != null ">
+                <![CDATA[  and a.fangwu_danjia >= #{params.fangwuDanjiaStart}   ]]>
+            </if>
+            <if test="params.fangwuDanjiaEnd != null ">
+                <![CDATA[  and a.fangwu_danjia <= #{params.fangwuDanjiaEnd}   ]]>
+            </if>
+            <if test="params.fangwuOldMoneyStart != null ">
+                <![CDATA[  and a.fangwu_old_money >= #{params.fangwuOldMoneyStart}   ]]>
+            </if>
+            <if test="params.fangwuOldMoneyEnd != null ">
+                <![CDATA[  and a.fangwu_old_money <= #{params.fangwuOldMoneyEnd}   ]]>
+            </if>
+            <if test="params.fangwuNewMoneyStart != null ">
+                <![CDATA[  and a.fangwu_new_money >= #{params.fangwuNewMoneyStart}   ]]>
+            </if>
+            <if test="params.fangwuNewMoneyEnd != null ">
+                <![CDATA[  and a.fangwu_new_money <= #{params.fangwuNewMoneyEnd}   ]]>
+            </if>
+            <if test="params.fangwuClicknumStart != null and params.fangwuClicknumStart != ''">
+                <![CDATA[  and a.fangwu_clicknum >= #{params.fangwuClicknumStart}   ]]>
+            </if>
+            <if test="params.fangwuClicknumEnd != null and params.fangwuClicknumEnd != ''">
+                <![CDATA[  and a.fangwu_clicknum <= #{params.fangwuClicknumEnd}   ]]>
+            </if>
+             <if test="params.fangwuClicknum != null and params.fangwuClicknum != ''">
+                and a.fangwu_clicknum = #{params.fangwuClicknum}
+             </if>
+            <if test=" params.fangwuContent != '' and params.fangwuContent != null and params.fangwuContent != 'null' ">
+                and a.fangwu_content like CONCAT('%',#{params.fangwuContent},'%')
+            </if>
+            <if test="params.fangwuzhuangtaiTypes != null and params.fangwuzhuangtaiTypes != ''">
+                and a.fangwuzhuangtai_types = #{params.fangwuzhuangtaiTypes}
+            </if>
+            <if test="params.shangxiaTypes != null and params.shangxiaTypes != ''">
+                and a.shangxia_types = #{params.shangxiaTypes}
+            </if>
+            <if test="params.fangwuDeleteStart != null and params.fangwuDeleteStart != ''">
+                <![CDATA[  and a.fangwu_delete >= #{params.fangwuDeleteStart}   ]]>
+            </if>
+            <if test="params.fangwuDeleteEnd != null and params.fangwuDeleteEnd != ''">
+                <![CDATA[  and a.fangwu_delete <= #{params.fangwuDeleteEnd}   ]]>
+            </if>
+             <if test="params.fangwuDelete != null and params.fangwuDelete != ''">
+                and a.fangwu_delete = #{params.fangwuDelete}
+             </if>
+
+        </where>
+
+        order by a.${params.orderBy} desc 
+    </select>
+
+</mapper>
